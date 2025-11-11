@@ -1,11 +1,21 @@
 import express from 'express';
 import dotenv from 'dotenv';
 
+import { connectDB } from './config/db.js';
+import { config } from './config/config.js';
+import { globalErrorHandler } from './middleware/globalErrorHandler.js';
+
 const app = express();
 dotenv.config()
 
-const PORT = process.env.PORT;
+const PORT = config.port;
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on port: ${PORT}`);
-})
+// Global Error Handler
+app.use(globalErrorHandler);
+
+// Server
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server started on PORT: ${PORT}`);
+  });
+});
