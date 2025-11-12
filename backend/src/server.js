@@ -5,10 +5,18 @@ import { connectDB } from './config/db.js';
 import { config } from './config/config.js';
 import { globalErrorHandler } from './middleware/globalErrorHandler.js';
 
+import userRoute from './routes/userRoute.js';
+
 const app = express();
 dotenv.config()
 
 const PORT = config.port;
+
+// Middleware
+app.use(express.json());
+
+// Endpoints
+app.use('/api/user', userRoute);
 
 // Global Error Handler
 app.use(globalErrorHandler);
