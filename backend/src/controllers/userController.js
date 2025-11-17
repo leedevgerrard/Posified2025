@@ -6,7 +6,7 @@ import User from "../models/User.js";
 
 export const register = async (req, res, next) => {
   try {
-    const { name, email, phone, password, passwordValidator, role } = req.body;
+    const { name, email, phone, password, confirmPassword, role } = req.body;
 
     if (!name || !email || !phone || !password || !confirmPassword || !role) {
       const error = createHttpError(400, 'All fields are required!');
@@ -73,6 +73,18 @@ export const login = async (req, res, next) => {
       success: true,
       message: 'User has successfully login!',
       data: isUserPresent
+    })
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    res.status(200).json({
+      success: true,
+      data: user
     })
   } catch (error) {
     next(error);
