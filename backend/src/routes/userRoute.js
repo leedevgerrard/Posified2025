@@ -4,7 +4,6 @@ import { isVerfiedUser } from './../middleware/tokenVerification.js';
 router = express.Router();
 
 router.route('/').get(isVerfiedUser, getUser);
-// router.route('/:id')
 router.route('/register').post(register);
 router.route('/login').post(login);
 
