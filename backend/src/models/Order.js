@@ -4,7 +4,7 @@ const orderSchema = new mongoose.Schema(
   {
     customerDetails: {
       name: { type: String, required: true },
-      guests: { type: Number, required: True },
+      guests: { type: Number, required: true },
     },
     orderDate: {
         type: Date,
@@ -15,7 +15,11 @@ const orderSchema = new mongoose.Schema(
       tax: { type: Number, required: true },
       totalAfterTax: { type: Number, required: true }
     },
-    items: []
+    items: [],
+    table: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Table'
+    }
   },
   {timestamps: true}
 )

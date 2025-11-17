@@ -1,7 +1,7 @@
 import express from 'express';
 import { login, register, getUser } from '../controllers/userController.js';
 import { isVerfiedUser } from './../middleware/tokenVerification.js';
-router = express.Router();
+const router = express.Router();
 
 router.route('/').get(isVerfiedUser, getUser);
 router.route('/register').post(register);

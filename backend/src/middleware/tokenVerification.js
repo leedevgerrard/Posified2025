@@ -1,7 +1,7 @@
 import createHttpError from 'http-errors';
 import jwt from 'jsonwebtoken';
-import { config } from '../config/config';
-import User from '../models/User';
+import { config } from '../config/config.js';
+import User from '../models/User.js';
 
 export const isVerfiedUser = async (req, res, next) => {
   try {
