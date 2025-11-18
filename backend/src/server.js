@@ -8,6 +8,8 @@ import { globalErrorHandler } from './middleware/globalErrorHandler.js';
 
 import userRoute from './routes/userRoute.js';
 import orderRoute from './routes/orderRoute.js';
+import tableRoute from './routes/tableRoute.js';
+import productRoute from './routes/productRoute.js';
 
 const app = express();
 dotenv.config()
@@ -21,6 +23,8 @@ app.use(cookieParser())
 // Endpoints
 app.use('/api/user', userRoute);
 app.use('/api/order', orderRoute);
+app.use('/api/table', tableRoute);
+app.use('/api/product', productRoute);
 
 // Global Error Handler
 app.use(globalErrorHandler);
