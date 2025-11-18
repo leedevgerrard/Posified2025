@@ -1,0 +1,62 @@
+import mongoose from "mongoose";
+import createHttpError from "http-errors";
+
+import Category from "../models/Category";
+
+export const addCategory = async (req, res, next) => {
+  try {
+    const { name, slug } = req.body;
+    if (!name || !slug) {
+      const error = createHttpError(400, 'Categoy details are not complete!');
+      return next(error);
+    }
+
+    const category = new Category(req.body);
+    await category.save();
+
+    res.status(201).json({
+      success: true,
+      message: 'New category added!',
+      data: category
+    })
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const getAllCategories = async (req, res, next) => {
+  try {
+    const categories = await Category.find();
+
+    res.status(200).json({
+      success: true,
+      data: categories
+    })
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const deleteCategory = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      const error = createHttpError(404, 'Invalid ID!');
+      return next(error);
+    }
+
+    const category = await Category.findByIdAndDelete(id);
+    if (!category) {
+      const error = createHttpError(404, 'Category not found!');
+      return next(error);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Category deleted!',
+      data: category
+    })
+  } catch (error) {
+    next(error);
+  }
+}
