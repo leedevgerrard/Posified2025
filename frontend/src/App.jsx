@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Header from './components/shared/Header';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
+import OrderPage from './pages/OrderPage';
 
 const Layout = () => {
 
@@ -14,6 +15,7 @@ const Layout = () => {
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/auth' element={<AuthPage />} />
+        <Route path='/order' element={<OrderPage />} />
         <Route path='*' element={<div>Page Not Found</div>} />
       </Routes>
     </>
