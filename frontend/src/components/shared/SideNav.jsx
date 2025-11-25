@@ -1,0 +1,28 @@
+import React from 'react';
+import { FaHome, FaClipboardList, FaUserCircle } from 'react-icons/fa';
+import { MdTableBar } from 'react-icons/md';
+import { HiOutlineDotsCircleHorizontal } from 'react-icons/hi';
+
+const SideNav = () => {
+  return (
+    <div className='absolute pt-10 bottom-0 left-0 top-[3rem] flex flex-col justify-between w-60 shadow-[5px_0_5px_rgba(0,0,0,0.05)]'>
+      <div className='flex-col items-center justify-around pl-12 pr-8'>
+        <button onClick={() => navigate('/')} className='mb-5'><FaHome className='inline mr-4' size={20} /> Home</button>
+        <button onClick={() => navigate('/orders')} className='mb-5'><FaClipboardList className='inline mr-4' size={20} /> Orders</button>
+        <button onClick={() => navigate('/tables')} className='mb-5'><MdTableBar className='inline mr-4' size={20} /> Tables</button>
+        <button><HiOutlineDotsCircleHorizontal className='inline mr-4' size={20} /> Others</button>
+      </div>
+      
+      {/* <div onClick={() => navigate('/user-info')} className='flex items-center py-5 px-5 gap-3 cursor-pointer hover:bg-gray-50 w-[89%]'>
+        <FaUserCircle className='text-4xl' />
+        <div className='flex flex-col items-start'>
+          <h1 className='text-md font-semibold'>{userData.name || 'Test User'}</h1>
+          <p className='text-x'>{userData.role || 'Role'}</p>
+        </div>
+      </div> */}
+      
+    </div>
+  )
+}
+
+export default SideNav;

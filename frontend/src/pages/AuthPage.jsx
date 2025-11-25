@@ -34,7 +34,7 @@ const AuthPage = () => {
 
       {/* Right Section */}
         <div className='w-[50%] relative flex items-center justify-center bg-cover'>
-          <img className='w-full h-full object-cover' src={authIllustration} alt="Auth Page Illustration" />
+          <img className='w-full h-full object-cover' src={authIllustration} alt="auth page illustration" />
         </div>
     </div>
   )
