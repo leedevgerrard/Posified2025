@@ -16,7 +16,14 @@ const OrderPage = () => {
           <BackButton />
           <h1 className='text-3xl'>Orders List</h1>
         </div>
-        <div className='flex flex-col items-center justify-center px-6 w-full pb-2'>
+        <div className='flex flex-col items-center justify-center px-6 w-full h-[calc(100vh-8rem)] overflow-auto'>
+          <OrderCard />
+          <OrderCard />
+          <OrderCard />
+          <OrderCard />
+          <OrderCard />
+          <OrderCard />
+          <OrderCard />
           <OrderCard />
           <OrderCard />
           <OrderCard />
