@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import OrderCard from './../components/orderPage/OrderCard';
 import SideNav from '../components/shared/SideNav';
 import BackButton from '../components/shared/BackButton';
