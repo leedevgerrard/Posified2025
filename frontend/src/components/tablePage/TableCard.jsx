@@ -1,8 +1,16 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const TableCard = () => {
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/menu');
+  }
+
   return (
-    <div className='bg-slate-50 h-[180px] shadow-md p-4 rounded-lg cursor-pointer'>
+    <div onClick={handleClick} className='bg-slate-50 h-[180px] shadow-md p-4 rounded-lg cursor-pointer'>
       <div className='flex items-center justify-between px-1'>
         <h1 className='text-xl font-semibold'>Table 3</h1>
         <p className='text-green-300 px-2 py-1 rounded-lg'>

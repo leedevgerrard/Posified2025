@@ -4,6 +4,7 @@ import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import OrderPage from './pages/OrderPage';
 import TablePage from './pages/TablePage';
+import MenuPage from './pages/MenuPage';
 
 const Layout = () => {
 
@@ -18,6 +19,7 @@ const Layout = () => {
         <Route path='/auth' element={<AuthPage />} />
         <Route path='/order' element={<OrderPage />} />
         <Route path='/table' element={<TablePage />} />
+        <Route path='/menu' element={<MenuPage />} />
         <Route path='*' element={<div>Page Not Found</div>} />
       </Routes>
     </>

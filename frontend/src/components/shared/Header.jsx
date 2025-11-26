@@ -7,7 +7,7 @@ const Header = () => {
 
   const navigate = useNavigate();
 
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [guestCount, setGuestCount] = useState(0);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -20,6 +20,11 @@ const Header = () => {
     if (guestCount >= 10) return;
     setGuestCount(prev => prev + 1);
   }
+
+  const handleCreateOrder = () => {
+    navigate('/table');
+    closeModal();
+  }
   
   return (
     <header className='flex justify-between items-center py-3 px-8 bg-green-500'>
@@ -30,12 +35,12 @@ const Header = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        <button className='bg-white py-2 px-6 rounded-lg'>
+        <button onClick={openModal} className='bg-white py-2 px-6 rounded-lg'>
           <span className='font-semibold text-green-500'>New Order</span>
         </button>
       </div>
 
-      <Modal title='Create Order' isOpen={isModalOpen} onClose={closeModal}>
+      <Modal title='Create Order' isOpen={isModalOpen} onClose={closeModal} maxWidth='large'>
         <div>
           <label className='block mb-2 text-sm font-medium'>Customer Name</label>
           <div className='flex items-center rounded-lg p-3 px-4 bg-gray-100'>
@@ -52,7 +57,7 @@ const Header = () => {
             <button onClick={increment} className='text-green-500 text-2xl'>&#43;</button>
           </div>
         </div>
-        <button className='w-full bg-green-500 text-white rounded-lg py-3 mt-5 hover:bg-green-700'>
+        <button onClick={handleCreateOrder} className='w-full bg-green-500 text-white rounded-lg py-3 mt-5 hover:bg-green-700'>
           Create Order  
         </button>
       </Modal>

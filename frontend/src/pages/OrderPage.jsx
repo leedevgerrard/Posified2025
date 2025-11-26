@@ -14,7 +14,7 @@ const OrderPage = () => {
       <div className='flex flex-1 flex-col items-start justify-center'>
         <div className='flex items-center gap-4 pl-6 py-4'>
           <BackButton />
-          <h1 className='text-3xl'>Orders List</h1>
+          <h1 className='text-2xl font-bold tracking-wide'>Orders List</h1>
         </div>
         <div className='flex flex-col items-center justify-center px-6 w-full h-[calc(100vh-8rem)] overflow-auto'>
           <OrderCard />

@@ -14,7 +14,7 @@ const TablePage = () => {
       <div className='flex flex-1 flex-col items-start justify-center'>
         <div className='flex items-center gap-4 pl-6 py-4'>
           <BackButton />
-          <h1 className='text-3xl'>Tables List</h1>
+          <h1 className='text-2xl font-bold tracking-wide'>Tables List</h1>
         </div>
         <div className='flex items-center justify-center px-5 w-full pb-2'>
           <div className='grid grid-cols-3 gap-5 w-[90%] h-[calc(100vh-9rem)] px-1 overflow-auto'>
