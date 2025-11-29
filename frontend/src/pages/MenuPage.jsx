@@ -5,11 +5,15 @@ import { categories, products } from '../constants/constants';
 import SideNav from '../components/shared/SideNav';
 import BackButton from '../components/shared/BackButton';
 import Modal from '../components/shared/Modal';
+import MenuCustomerInfo from '../components/menuPage/MenuCustomerInfo';
+import MenuCartInfo from '../components/menuPage/MenuCartInfo';
+import Bill from '../components/menuPage/Bill';
 
 const MenuPage = () => {
 
   const [selected, setSelected] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -79,11 +83,20 @@ const MenuPage = () => {
         </div>
 
         {/* Right Div */}
-        <div className="flex-[1] border-l-2"></div>
+        <div className="flex-[1] border-l-2">
+          {/* Customer info */}
+          <MenuCustomerInfo />
+          <hr className='border-t-2 mx-3' />
+          {/* Cart items */}
+          <MenuCartInfo />
+          <hr className='border-t-2 mx-3' />
+          {/* Bills */}
+          <Bill isPaying={isPaying} setIsPaying={setIsPaying} />
+        </div>
 
       </div>
     </section>
   )
 }
 
-export default MenuPage
+export default MenuPage;
