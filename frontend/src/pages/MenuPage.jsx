@@ -8,8 +8,11 @@ import Modal from '../components/shared/Modal';
 import MenuCustomerInfo from '../components/menuPage/MenuCustomerInfo';
 import MenuCartInfo from '../components/menuPage/MenuCartInfo';
 import Bill from '../components/menuPage/Bill';
+import { useSelector } from 'react-redux';
 
 const MenuPage = () => {
+
+  const customerData = useSelector(state => state.customer);
 
   const [selected, setSelected] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,9 +46,9 @@ const MenuPage = () => {
               <MdRestaurantMenu className='text-4xl' />
               <div className='flex flex-col items-start'>
                 <h1 className='text-md font-semibold tracking-wide'>
-                  Customer Name
+                  {customerData.customerName || 'Customer Name'}
                 </h1>
-                <p className='text-xs font-medium'>Table 3</p>
+                <p className='text-xs font-medium'>Table {customerData.tableNum || 'N/A'}</p>
               </div>
             </div>
           </div>

@@ -18,16 +18,11 @@ const TablePage = () => {
         </div>
         <div className='flex items-center justify-center px-5 w-full pb-2'>
           <div className='grid grid-cols-3 gap-5 w-[90%] h-[calc(100vh-9rem)] px-1 overflow-auto'>
-            <TableCard />
-            <TableCard />
-            <TableCard />
-            <TableCard />
-            <TableCard />
-            <TableCard />
-            <TableCard />
-            <TableCard />
-            <TableCard />
-            <TableCard />
+            <TableCard tableNum='1' />
+            <TableCard tableNum='2' />
+            <TableCard tableNum='3' />
+            <TableCard tableNum='4' />
+            <TableCard tableNum='5' />
           </div>
         </div>
       </div>

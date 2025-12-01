@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import logo from './../../assets/images/posified-logo.png';
 import Modal from './Modal';
+import { useDispatch } from 'react-redux';
+import { setCustomer } from '../../redux/slices/customerSlice';
 
 const Header = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [guestCount, setGuestCount] = useState(0);
+  const [name, setName] = useState();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -26,6 +30,7 @@ const Header = () => {
   const isActivePage = path => location.pathname === path;
 
   const handleCreateOrder = () => {
+    dispatch(setCustomer({name}));
     navigate('/table');
     closeModal();
   }
@@ -48,7 +53,7 @@ const Header = () => {
         <div>
           <label className='block mb-2 text-sm font-medium'>Customer Name</label>
           <div className='flex items-center rounded-lg p-3 px-4 bg-gray-100'>
-            <input type="text" name='' placeholder='Enter customer name' id='' className='bg-transparent flex-1 focus:outline-none' />
+            <input value={name} onChange={(e) => setName(e.target.value)} type="text" name='' placeholder='Enter customer name' id='' className='bg-transparent flex-1 focus:outline-none' />
           </div>
         </div>
         <div>
