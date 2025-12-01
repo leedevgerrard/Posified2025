@@ -1,19 +1,28 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { getTotalPrice } from '../../redux/slices/cartSlice';
 
 const Bill = ({isPaying, setIsPaying}) => {
+
+  const cartData = useSelector(state => state.cart);
+  const totalPrice = useSelector(getTotalPrice);
+  const taxRate = 0.1;
+  const tax = totalPrice * taxRate;
+  const totalPriceWithTax = totalPrice + tax;
+
   return (
     <div className='pb-2.5'>
       <div className='flex items-center justify-between px-5 mt-2'>
-        <p className='text-xs font-medium mt-2'>Items(3)</p>
-        <h1 className='text-md font-bold'>Rp 300000</h1>
+        <p className='text-xs font-medium mt-2'>Items({cartData.length})</p>
+        <h1 className='text-md font-bold'>Rp {totalPrice}</h1>
       </div>
       <div className='flex items-center justify-between px-5 mt-2'>
-        <p className='text-xs font-medium mt-2'>Tax(10%)</p>
-        <h1 className='text-md font-bold'>Rp 30000</h1>
+        <p className='text-xs font-medium mt-2'>Tax({taxRate * 100}%)</p>
+        <h1 className='text-md font-bold'>Rp {tax}</h1>
       </div>
       <div className='flex items-center justify-between px-5 mt-2'>
         <p className='text-xs font-medium mt-2'>Total Price</p>
-        <h1 className='text-md font-bold'>Rp 330000</h1>
+        <h1 className='text-md font-bold'>Rp {totalPriceWithTax}</h1>
       </div>
 
       {isPaying ? (

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MdRestaurantMenu } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
 import { categories, products } from '../constants/constants';
 
 import SideNav from '../components/shared/SideNav';
@@ -8,11 +9,13 @@ import Modal from '../components/shared/Modal';
 import MenuCustomerInfo from '../components/menuPage/MenuCustomerInfo';
 import MenuCartInfo from '../components/menuPage/MenuCartInfo';
 import Bill from '../components/menuPage/Bill';
-import { useSelector } from 'react-redux';
+import { addItems } from '../redux/slices/cartSlice';
 
 const MenuPage = () => {
 
   const customerData = useSelector(state => state.customer);
+
+  const dispatch = useDispatch();
 
   const [selected, setSelected] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,6 +26,14 @@ const MenuPage = () => {
   const openCard = (categorySlug) => {
     setSelected(categorySlug);
     openModal();
+  }
+
+  const handleAddToCart = (item) => {
+    const { name, price } = item;
+    const newObj = {id: Date.now(), name, pricePerQty: price, qty: 1, price: price * 1};
+
+    dispatch(addItems(newObj));
+    closeModal();
   }
 
   return (
@@ -70,11 +81,11 @@ const MenuPage = () => {
           <Modal isOpen={isModalOpen} onClose={closeModal}>
             <div className='grid grid-cols-4 gap-4 px-2 py-4 w-[100%] h-[300px] overflow-auto'>
               {
-                products?.map((product) => {
+                products?.map((item) => {
                   return (
-                    <div key={product.id} className='flex items-center justify-center p-4 rounded-lg h-[100px] cursor-pointer bg-green-500 text-white shadow-md'>
+                    <div key={item.id} onClick={() => handleAddToCart(item)} className='flex items-center justify-center p-4 rounded-lg h-[100px] cursor-pointer bg-green-500 text-white shadow-md'>
                       <h1 className='text-lg font-semibold'>
-                        {product.name}
+                        {item.name}
                       </h1>
                     </div>
                   )
