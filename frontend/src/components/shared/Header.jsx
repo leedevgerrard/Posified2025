@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import logo from './../../assets/images/posified-logo.png';
 import Modal from './Modal';
 
 const Header = () => {
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [guestCount, setGuestCount] = useState(0);
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -20,6 +22,8 @@ const Header = () => {
     if (guestCount >= 10) return;
     setGuestCount(prev => prev + 1);
   }
+
+  const isActivePage = path => location.pathname === path;
 
   const handleCreateOrder = () => {
     navigate('/table');
@@ -35,7 +39,7 @@ const Header = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        <button onClick={openModal} className='bg-white py-2 px-6 rounded-lg'>
+        <button disabled={isActivePage('/order') || isActivePage('/table') || isActivePage('/menu')} onClick={openModal} className='bg-white py-2 px-6 rounded-lg disabled:opacity-80'>
           <span className='font-semibold text-green-500'>New Order</span>
         </button>
       </div>
