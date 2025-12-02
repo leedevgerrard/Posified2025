@@ -1,6 +1,15 @@
+import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
+import { login } from '../../https';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/slices/userSlice';
+import { useNavigate } from 'react-router-dom';
+import { enqueueSnackbar } from 'notistack';
 
 const Login = () => {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -13,7 +22,20 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    loginMutation.mutate(formData);
   }
+
+  const loginMutation = useMutation({
+    mutationFn: (reqData) => login(reqData),
+    onSuccess: (res) => {
+      dispatch(setUser(res.data.data));
+      navigate('/');
+    },
+    onError: (error) => {
+      const { response } = error;
+      enqueueSnackbar(response.data.message, {variant: 'error'});
+    }
+  })
 
   return (
     <div>
