@@ -1,29 +1,60 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Header from './components/shared/Header';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import OrderPage from './pages/OrderPage';
 import TablePage from './pages/TablePage';
 import MenuPage from './pages/MenuPage';
+import { useSelector } from 'react-redux';
+import useLoadData from './hooks/useLoadData';
+import Loading from './components/shared/Loading';
 
 const Layout = () => {
 
+  const isLoading = useLoadData();
   const location = useLocation();
   const routesWithoutHeader = ['/auth'];
+  const { isAuth } = useSelector(state => state.user);
+
+  if (isLoading) return <Loading />
 
   return (
     <>
       {!routesWithoutHeader.includes(location.pathname) && <Header />}
       <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/auth' element={<AuthPage />} />
-        <Route path='/order' element={<OrderPage />} />
-        <Route path='/table' element={<TablePage />} />
-        <Route path='/menu' element={<MenuPage />} />
+        <Route path='/' element={
+          <ProtectedRoutes>
+            <HomePage />
+          </ProtectedRoutes>
+        } />
+        <Route path='/auth' element={isAuth ? <Navigate to={'/'} /> : <AuthPage />} />
+        <Route path='/order' element={
+          <ProtectedRoutes>
+            <OrderPage />
+          </ProtectedRoutes>
+        } />
+        <Route path='/table' element={
+          <ProtectedRoutes>
+            <TablePage />
+          </ProtectedRoutes>
+        } />
+        <Route path='/menu' element={
+          <ProtectedRoutes>
+            <MenuPage />
+          </ProtectedRoutes>
+        } />
         <Route path='*' element={<div>Page Not Found</div>} />
       </Routes>
     </>
   )
+}
+
+const ProtectedRoutes = ({children}) => {
+  const { isAuth } = useSelector(state => state.user);
+  if (!isAuth) {
+    return <Navigate to={'/auth'} />
+  }
+  return children;
 }
 
 const App = () => {
