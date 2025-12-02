@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import User from "../models/User.js";
+import { config } from "../config/config.js";
 
 export const register = async (req, res, next) => {
   try {

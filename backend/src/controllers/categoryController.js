@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import createHttpError from "http-errors";
 
-import Category from "../models/Category";
+import Category from "../models/Category.js";
 
 export const addCategory = async (req, res, next) => {
   try {
