@@ -12,4 +12,5 @@ const api = axios.create({
 // User Endpoints
 export const register = (data) => api.post('/api/user/register', data);
 export const login = (data) => api.post('/api/user/login', data);
+export const logout = () => api.post('/api/user/logout');
 export const getUser = () => api.get('/api/user');

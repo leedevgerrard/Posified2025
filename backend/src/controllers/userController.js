@@ -72,8 +72,20 @@ export const login = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: 'User has successfully login!',
+      message: 'User has successfully logged in!',
       data: isUserPresent
+    })
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const logout = async (req, res, next) => {
+  try {
+    res.clearCookie('accessToken');
+    res.status(200).json({
+      success: true,
+      message: 'User has successfully logged out!'
     })
   } catch (error) {
     next(error);
