@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import logo from './../../assets/images/posified-logo.png';
 import Modal from './Modal';
-import { useDispatch } from 'react-redux';
+import { MdDashboardCustomize } from "react-icons/md";
+import { useDispatch, useSelector } from 'react-redux';
 import { setCustomer } from '../../redux/slices/customerSlice';
 
 const Header = () => {
@@ -10,6 +11,8 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+
+  const userData = useSelector(state => state.user);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [guestCount, setGuestCount] = useState(0);
@@ -44,6 +47,12 @@ const Header = () => {
       </div>
 
       <div className="flex items-center gap-4">
+        {userData.role === 'Admin' && (
+          <div>
+            <MdDashboardCustomize onClick={() => navigate('/dashboard')} className='text-white text-2xl cursor-pointer'/>
+          </div>
+        )}
+        
         <button disabled={isActivePage('/order') || isActivePage('/table') || isActivePage('/menu')} onClick={openModal} className='bg-white py-2 px-6 rounded-lg disabled:opacity-80'>
           <span className='font-semibold text-green-500'>New Order</span>
         </button>

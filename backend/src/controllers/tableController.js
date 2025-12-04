@@ -4,19 +4,19 @@ import Table from "../models/Table.js";
 
 export const addTable = async (req, res, next) => {
   try {
-    const { tableNo } = req.body;
-    if (!tableNo) {
+    const { tableNum } = req.body;
+    if (!tableNum) {
       const error = createHttpError(400, 'Please provide table number!');
       return next(error);
     }
 
-    const isTablePresent = await Table.find({tableNo});
+    const isTablePresent = await Table.find({tableNum});
     if (isTablePresent) {
       const error = createHttpError(400, 'Table already exists!');
       return next(error);
     }
 
-    const table = new Table({tableNo});
+    const table = new Table({tableNum});
     await table.save();
 
     res.status(201).json({

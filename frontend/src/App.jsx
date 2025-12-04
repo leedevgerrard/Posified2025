@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import OrderPage from './pages/OrderPage';
 import TablePage from './pages/TablePage';
 import MenuPage from './pages/MenuPage';
+import AdminDash from './pages/AdminDash';
 import { useSelector } from 'react-redux';
 import useLoadData from './hooks/useLoadData';
 import Loading from './components/shared/Loading';
@@ -41,6 +42,11 @@ const Layout = () => {
         <Route path='/menu' element={
           <ProtectedRoutes>
             <MenuPage />
+          </ProtectedRoutes>
+        } />
+        <Route path='/dashboard' element={
+          <ProtectedRoutes>
+            <AdminDash />
           </ProtectedRoutes>
         } />
         <Route path='*' element={<div>Page Not Found</div>} />

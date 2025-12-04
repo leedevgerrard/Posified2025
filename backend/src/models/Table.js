@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const tableSchema = new mongoose.Schema(
   {
-    tableNo: {
+    tableNum: {
       type: Number,
       required: true,
       unique: true
