@@ -3,6 +3,7 @@ import { MdTableBar, MdCategory } from 'react-icons/md';
 import { BiSolidDish } from 'react-icons/bi';
 
 import AddTableModal from '../components/adminDash/AddTableModal';
+import AddCategoryModal from '../components/adminDash/AddCategoryModal';
 
 const AdminDash = () => {
 

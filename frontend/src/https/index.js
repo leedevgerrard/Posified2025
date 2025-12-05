@@ -18,3 +18,7 @@ export const getUser = () => api.get('/api/user');
 // Table Endpoints
 export const getAllTables = () => api.get('/api/table');
 export const addTable = (data) => api.post('/api/table', data);
+
+// Category Endpoints
+export const getAllCategories = () => api.get('/api/category');
+export const addCategory = (data) => api.post('/api/category', data);

@@ -3,7 +3,7 @@ import createHttpError from "http-errors";
 export const isAdmin = (req, res, next) => {
   try {
     const { role } = req.user;
-    if (role !== 'admin') {
+    if (role !== 'Admin') {
       const error = createHttpError(403, 'Forbidden!');
       return next(error);
     }
