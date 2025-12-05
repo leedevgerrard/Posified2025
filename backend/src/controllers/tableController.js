@@ -10,7 +10,7 @@ export const addTable = async (req, res, next) => {
       return next(error);
     }
 
-    const isTablePresent = await Table.find({tableNum});
+    const isTablePresent = await Table.findOne({tableNum});
     if (isTablePresent) {
       const error = createHttpError(400, 'Table already exists!');
       return next(error);

@@ -2,8 +2,23 @@ import React from 'react';
 import SideNav from '../components/shared/SideNav';
 import TableCard from './../components/tablePage/TableCard';
 import BackButton from '../components/shared/BackButton';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { getAllTables } from '../https';
+import { enqueueSnackbar } from 'notistack';
 
 const TablePage = () => {
+
+  const { data: resData, isError } = useQuery({
+    queryKey: ['tables'],
+    queryFn: async () => {
+      return await getAllTables();
+    },
+    placeholderData: keepPreviousData
+  })
+  if (isError) {
+    enqueueSnackbar('Something went wrong!', { variant: 'error' });
+  }
+
   return (
     <section className='flex'>
       {/* Side Nav */}
@@ -18,11 +33,11 @@ const TablePage = () => {
         </div>
         <div className='flex items-center justify-center px-5 w-full pb-2'>
           <div className='grid grid-cols-3 gap-5 w-[90%] h-[calc(100vh-9rem)] px-1 overflow-auto'>
-            <TableCard tableNum='1' />
-            <TableCard tableNum='2' />
-            <TableCard tableNum='3' />
-            <TableCard tableNum='4' />
-            <TableCard tableNum='5' />
+            {resData?.data.data.map((table) => {
+              return (
+                <TableCard tableNum={table.tableNum} status={table.status} />
+              )
+            })}
           </div>
         </div>
       </div>
