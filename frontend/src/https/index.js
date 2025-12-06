@@ -22,3 +22,9 @@ export const addTable = (data) => api.post('/api/table', data);
 // Category Endpoints
 export const getAllCategories = () => api.get('/api/category');
 export const addCategory = (data) => api.post('/api/category', data);
+
+// Product Endpoints
+export const getAllProducts = () => api.get('/api/product');
+export const addProduct = (data) => api.post('/api/product', data);
+export const getProductById = () => api.get('/api/product/:id');
+export const getProductByCategoryId = () => api.get('/api/product/:categoryId');

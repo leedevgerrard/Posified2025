@@ -4,23 +4,24 @@ import { BiSolidDish } from 'react-icons/bi';
 
 import AddTableModal from '../components/adminDash/AddTableModal';
 import AddCategoryModal from '../components/adminDash/AddCategoryModal';
+import AddProductModal from '../components/adminDash/AddProductModal';
 
 const AdminDash = () => {
 
   const buttons = [
     { label: 'Add Table', icon: <MdTableBar />, action: 'table'},
     { label: 'Add Category', icon: <MdCategory />, action: 'category'},
-    { label: 'Add Item', icon: <BiSolidDish />, action: 'item'}
+    { label: 'Add Product', icon: <BiSolidDish />, action: 'product'}
   ]
 
   const [ isTableModalOpen, setIsTableModalOpen ] = useState(false);
   const [ isCategoryModalOpen, setIsCategoryModalOpen ] = useState(false);
-  const [ isItemModalOpen, setIsItemModalOpen ] = useState(false);
+  const [ isProductModalOpen, setIsProductModalOpen ] = useState(false);
 
   const handleOpenModal = (action) => {
     if (action === 'table') setIsTableModalOpen(true);
     if (action === 'category') setIsCategoryModalOpen(true);
-    if (action === 'item') setIsItemModalOpen(true);
+    if (action === 'product') setIsProductModalOpen(true);
   }
 
   return (
@@ -41,7 +42,7 @@ const AdminDash = () => {
 
       {isTableModalOpen && <AddTableModal setIsTableModalOpen={setIsTableModalOpen} />}
       {isCategoryModalOpen && <AddCategoryModal setIsCategoryModalOpen={setIsCategoryModalOpen} />}
-      {isItemModalOpen && <AddItemModal setIsItemModalOpen={setIsItemModalOpen} />}
+      {isProductModalOpen && <AddProductModal setIsProductModalOpen={setIsProductModalOpen} />}
 
     </section>
   )

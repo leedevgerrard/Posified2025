@@ -60,6 +60,29 @@ export const getProductById = async (req, res, next) => {
   }
 }
 
+export const getProductByCategoryId = async (req, res, next) => {
+  try {
+    const { categoryId } = req.params;
+    if (!categoryId || !mongoose.Types.ObjectId.isValid(categoryId)) {
+      const error = createHttpError(404, 'Invalid ID!');
+      return next(error);
+    }
+
+    const product = await Product.find({ category: categoryId });
+    if (!product) {
+      const error = createHttpError(404, 'Product not found!');
+      return next(error);
+    }
+
+    res.status(200).json({
+      success: true,
+      data: product
+    })
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const deleteProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
