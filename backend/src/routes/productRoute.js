@@ -5,7 +5,7 @@ import { addProduct, deleteProduct, getAllProducts, getProductByCategoryId, getP
 const router = express.Router();
 
 router.route('/').get(isVerfiedUser, getAllProducts).post(isVerfiedUser, isAdmin, addProduct);
-router.route('/:id').get(isVerfiedUser, getProductById).delete(isVerfiedUser, isAdmin, deleteProduct);
-router.route(':categoryId').get(isVerfiedUser, getProductByCategoryId);
+router.route('/:id').delete(isVerfiedUser, isAdmin, deleteProduct);
+router.route('/:categoryId').get(isVerfiedUser, getProductByCategoryId);
 
 export default router;

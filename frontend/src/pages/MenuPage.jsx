@@ -11,7 +11,7 @@ import MenuCartInfo from '../components/menuPage/MenuCartInfo';
 import Bill from '../components/menuPage/Bill';
 import { addItems } from '../redux/slices/cartSlice';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { getAllCategories } from '../https';
+import { getAllCategories, getProductByCategoryId } from '../https';
 import { enqueueSnackbar } from 'notistack';
 
 const MenuPage = () => {
@@ -20,33 +20,49 @@ const MenuPage = () => {
 
   const dispatch = useDispatch();
 
-  const [selected, setSelected] = useState(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const openCard = (categorySlug) => {
-    setSelected(categorySlug);
+  const openCard = async (categoryId, categorySlug) => {
+    setSelectedCategoryId(categoryId);
+    setSelectedCategory(categorySlug);
+    await refetchProducts();
     openModal();
   }
 
-  const handleAddToCart = (item) => {
-    const { name, price } = item;
+  const handleAddToCart = (product) => {
+    const { name, price } = product;
     const newObj = {id: Date.now(), name, pricePerQty: price, qty: 1, price: price * 1};
 
     dispatch(addItems(newObj));
     closeModal();
   }
 
-  const { data: resData, isError } = useQuery({
+  const { data: resCategoriesData, isError: isCategoriesError} = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
       return await getAllCategories();
     },
     placeholderData: keepPreviousData
   })
-  if (isError) {
+  if (isCategoriesError) {
+    enqueueSnackbar('Something went wrong!', { variant: 'error' });
+  }
+
+  const { data: resProductsData, isError: isProductsError, isLoading: isProductsLoading, refetch: refetchProducts } = useQuery({
+    queryKey: ['products', selectedCategory],
+    queryFn: async () => {
+      return await getProductByCategoryId(selectedCategoryId);
+    },
+    placeholderData: keepPreviousData,
+    enabled: false
+  })
+  if (isProductsError) {
     enqueueSnackbar('Something went wrong!', { variant: 'error' });
   }
 
@@ -80,9 +96,9 @@ const MenuPage = () => {
 
           <div className='grid grid-cols-4 gap-4 px-10 py-4 w-[100%] overflow-y-auto'>
             {
-              resData?.data.data.map((category) => {
+              resCategoriesData?.data.data.map((category) => {
                 return (
-                  <div key={category._id} onClick={() => openCard(category.slug)} className='flex items-center justify-center p-4 rounded-lg h-[100px] cursor-pointer bg-green-500 text-white shadow-md'>
+                  <div key={category._id} onClick={() => openCard(category._id, category.slug)} className='flex items-center justify-center p-4 rounded-lg h-[100px] cursor-pointer bg-green-500 text-white shadow-md'>
                     <h1 className='text-lg font-semibold'>
                       {category.name}
                     </h1>
@@ -92,21 +108,25 @@ const MenuPage = () => {
             }
           </div>
 
-          <Modal isOpen={isModalOpen} onClose={closeModal}>
-            <div className='grid grid-cols-4 gap-4 px-2 py-4 w-[100%] h-[300px] overflow-auto'>
-              {
-                products?.map((item) => {
-                  return (
-                    <div key={item.id} onClick={() => handleAddToCart(item)} className='flex items-center justify-center p-4 rounded-lg h-[100px] cursor-pointer bg-green-500 text-white shadow-md'>
-                      <h1 className='text-lg font-semibold'>
-                        {item.name}
-                      </h1>
-                    </div>
-                  )
-                })
-              }
-            </div>
-          </Modal>
+          {
+            selectedCategory &&
+            <Modal isOpen={isModalOpen} onClose={closeModal}>
+              <div className='grid grid-cols-4 gap-4 px-2 py-4 w-[100%] h-[300px] overflow-auto'>
+                {
+                  resProductsData?.data.data.map((product) => {
+                    return (
+                      <div key={product._id} onClick={() => handleAddToCart(product)} className='flex items-center justify-center p-4 rounded-lg h-[100px] cursor-pointer bg-green-500 text-white shadow-md'>
+                        <h1 className='text-lg font-semibold'>
+                          {product.name}
+                        </h1>
+                      </div>
+                    )
+                  })
+                }
+              </div>
+            </Modal>
+          }
+          
 
         </div>
 
