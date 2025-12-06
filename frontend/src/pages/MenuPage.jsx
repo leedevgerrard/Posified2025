@@ -10,6 +10,9 @@ import MenuCustomerInfo from '../components/menuPage/MenuCustomerInfo';
 import MenuCartInfo from '../components/menuPage/MenuCartInfo';
 import Bill from '../components/menuPage/Bill';
 import { addItems } from '../redux/slices/cartSlice';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { getAllCategories } from '../https';
+import { enqueueSnackbar } from 'notistack';
 
 const MenuPage = () => {
 
@@ -34,6 +37,17 @@ const MenuPage = () => {
 
     dispatch(addItems(newObj));
     closeModal();
+  }
+
+  const { data: resData, isError } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      return await getAllCategories();
+    },
+    placeholderData: keepPreviousData
+  })
+  if (isError) {
+    enqueueSnackbar('Something went wrong!', { variant: 'error' });
   }
 
   return (
@@ -66,9 +80,9 @@ const MenuPage = () => {
 
           <div className='grid grid-cols-4 gap-4 px-10 py-4 w-[100%] overflow-y-auto'>
             {
-              categories?.map((category) => {
+              resData?.data.data.map((category) => {
                 return (
-                  <div key={category.id} onClick={() => openCard(category.slug)} className='flex items-center justify-center p-4 rounded-lg h-[100px] cursor-pointer bg-green-500 text-white shadow-md'>
+                  <div key={category._id} onClick={() => openCard(category.slug)} className='flex items-center justify-center p-4 rounded-lg h-[100px] cursor-pointer bg-green-500 text-white shadow-md'>
                     <h1 className='text-lg font-semibold'>
                       {category.name}
                     </h1>
