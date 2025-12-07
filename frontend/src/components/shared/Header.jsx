@@ -53,7 +53,7 @@ const Header = () => {
           </div>
         )}
         
-        <button disabled={isActivePage('/order') || isActivePage('/table') || isActivePage('/menu')} onClick={openModal} className='bg-white py-2 px-6 rounded-lg disabled:opacity-80'>
+        <button disabled={isActivePage('/table') || isActivePage('/menu')} onClick={openModal} className='bg-white py-2 px-6 rounded-lg disabled:opacity-80'>
           <span className='font-semibold text-green-500'>New Order</span>
         </button>
       </div>

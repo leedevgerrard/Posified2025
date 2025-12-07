@@ -4,8 +4,11 @@ import { getTotalPrice } from '../../redux/slices/cartSlice';
 import { useMutation } from '@tanstack/react-query';
 import { addOrder } from '../../https';
 import { enqueueSnackbar } from 'notistack';
+import { useNavigate } from 'react-router-dom';
 
 const Bill = ({isPaying, setIsPaying}) => {
+
+  const navigate = useNavigate();
 
   const cartData = useSelector(state => state.cart);
   const customerData = useSelector(state => state.customer);
@@ -28,6 +31,7 @@ const Bill = ({isPaying, setIsPaying}) => {
       table: customerData.tableId
     }
     orderMutation.mutate(orderData);
+    navigate('/order');
   }
 
   const orderMutation = useMutation({
