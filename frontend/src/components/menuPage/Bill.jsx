@@ -1,14 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getTotalPrice } from '../../redux/slices/cartSlice';
+import { useMutation } from '@tanstack/react-query';
+import { addOrder } from '../../https';
+import { enqueueSnackbar } from 'notistack';
 
 const Bill = ({isPaying, setIsPaying}) => {
 
   const cartData = useSelector(state => state.cart);
+  const customerData = useSelector(state => state.customer);
+
   const totalPrice = useSelector(getTotalPrice);
   const taxRate = 0.1;
   const tax = totalPrice * taxRate;
   const totalPriceWithTax = totalPrice + tax;
+
+  const handleSaveOrder = () => {
+    const orderData = {
+      orderId: customerData.orderId,
+      customerName: customerData.customerName,
+      bills: {
+        total: totalPrice,
+        tax: tax,
+        totalAfterTax: totalPriceWithTax
+      },
+      items: cartData,
+      table: customerData.tableId
+    }
+    orderMutation.mutate(orderData);
+  }
+
+  const orderMutation = useMutation({
+    mutationFn: (reqData) => addOrder(reqData),
+    onSuccess: (res) => {
+      enqueueSnackbar('Order successfully added!', { variant: 'success' });
+    },
+    onError: (error) => {
+      const { response } = error;
+      enqueueSnackbar(response.data.message, { variant: 'error' });
+    }
+  })
 
   return (
     <div className='pb-2.5'>
@@ -41,7 +72,7 @@ const Bill = ({isPaying, setIsPaying}) => {
         <div>
           <div className='flex items-center gap-3 px-5 mt-4'>
             <button className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold'>Print Receipt</button>
-            <button className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold'>Save Order</button>
+            <button onClick={cartData && handleSaveOrder} className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold'>Save Order</button>
           </div>
           <div className='flex items-center px-5 mt-3'>
             <button onClick={() => setIsPaying(true)} className='bg-green-500 px-4 py-3 w-full rounded-lg font-semibold'>Payment</button>

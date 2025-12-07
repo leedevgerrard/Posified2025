@@ -35,7 +35,7 @@ const TablePage = () => {
           <div className='grid grid-cols-3 gap-5 w-[90%] h-[calc(100vh-9rem)] px-1 overflow-auto'>
             {resData?.data.data.map((table) => {
               return (
-                <TableCard tableNum={table.tableNum} status={table.status} />
+                <TableCard tableId={table.tableId} tableNum={table.tableNum} status={table.status} />
               )
             })}
           </div>

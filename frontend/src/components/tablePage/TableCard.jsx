@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { updateTable } from '../../redux/slices/customerSlice';
 
-const TableCard = ({ tableNum, status }) => {
+const TableCard = ({ tableId, tableNum, status }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleClick = (tableNum) => {
-    dispatch(updateTable({tableNum}));
+    dispatch(updateTable({tableId, tableNum}));
     navigate('/menu');
   }
 

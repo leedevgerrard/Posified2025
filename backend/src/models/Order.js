@@ -2,9 +2,13 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
   {
-    customerDetails: {
-      name: { type: String, required: true },
-      guests: { type: Number, required: true },
+    orderId: {
+      type: String,
+      required: true
+    },
+    customerName: {
+      type: String,
+      required: true
     },
     orderDate: {
         type: Date,
@@ -15,7 +19,9 @@ const orderSchema = new mongoose.Schema(
       tax: { type: Number, required: true },
       totalAfterTax: { type: Number, required: true }
     },
-    items: [],
+    items: {
+      type: Array
+    },
     table: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Table'

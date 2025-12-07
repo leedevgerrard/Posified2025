@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   orderId: '',
   customerName: '',
+  tableId: '',
   tableNum: ''
 }
 
@@ -22,6 +23,7 @@ const customerSlice = createSlice({
     },
 
     updateTable: (state, action) => {
+      state.tableId = action.payload.tableId;
       state.tableNum = action.payload.tableNum;
     }
   }
