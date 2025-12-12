@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getTotalPrice } from '../../redux/slices/cartSlice';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addOrder } from '../../https';
 import { enqueueSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const Bill = ({isPaying, setIsPaying}) => {
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const cartData = useSelector(state => state.cart);
   const customerData = useSelector(state => state.customer);
@@ -18,7 +19,7 @@ const Bill = ({isPaying, setIsPaying}) => {
   const tax = totalPrice * taxRate;
   const totalPriceWithTax = totalPrice + tax;
 
-  const handleSaveOrder = () => {
+  const handleSaveOrder = async () => {
     const orderData = {
       orderId: customerData.orderId,
       customerName: customerData.customerName,
@@ -30,8 +31,14 @@ const Bill = ({isPaying, setIsPaying}) => {
       items: cartData,
       table: customerData.tableId
     }
-    orderMutation.mutate(orderData);
-    navigate('/order');
+
+    try {
+      await orderMutation.mutateAsync(orderData);
+      await queryClient.invalidateQueries(['order']);
+      navigate('/order');
+    } catch (error) {
+      enqueueSnackbar('Something went wrong!', { variant: 'error' });
+    }
   }
 
   const orderMutation = useMutation({
