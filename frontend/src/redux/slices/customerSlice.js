@@ -11,6 +11,13 @@ const customerSlice = createSlice({
   name: 'customer',
   initialState,
   reducers: {
+    setCustomerInitialState: (state, action) => {
+      const { orderId, customerName, table: tableId } = action.payload;
+      state.orderId = orderId;
+      state.customerName = customerName;
+      state.tableId = tableId;
+    },
+
     setCustomer: (state, action) => {
       const { name } = action.payload;
       state.orderId = `${Date.now()}`;
@@ -29,5 +36,5 @@ const customerSlice = createSlice({
   }
 })
 
-export const { setCustomer, removeCustomer, updateTable } = customerSlice.actions;
+export const { setCustomerInitialState, setCustomer, removeCustomer, updateTable } = customerSlice.actions;
 export default customerSlice.reducer;

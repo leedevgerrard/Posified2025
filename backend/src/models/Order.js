@@ -6,13 +6,17 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    status: {
+      type: String,
+      default: 'ongoing'
+    },
     customerName: {
       type: String,
       required: true
     },
     orderDate: {
-        type: Date,
-        default: Date.now()
+      type: Date,
+      default: Date.now()
     },
     bills: {
       total: { type: Number, required: true },
@@ -25,6 +29,10 @@ const orderSchema = new mongoose.Schema(
     table: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Table'
+    },
+    tableNum: {
+      type: Number,
+      required: true
     }
   },
   {timestamps: true}

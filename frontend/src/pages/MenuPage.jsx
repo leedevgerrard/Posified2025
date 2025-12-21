@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdRestaurantMenu } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { categories, products } from '../constants/constants';
@@ -9,17 +9,33 @@ import Modal from '../components/shared/Modal';
 import MenuCustomerInfo from '../components/menuPage/MenuCustomerInfo';
 import MenuCartInfo from '../components/menuPage/MenuCartInfo';
 import Bill from '../components/menuPage/Bill';
-import { addItems, removeItem, updateQty } from '../redux/slices/cartSlice';
+import { addItems, removeItem, setCartInitialState, updateQty } from '../redux/slices/cartSlice';
 import { keepPreviousData, useQuery, } from '@tanstack/react-query';
 import { getAllCategories, getProductByCategoryId } from '../https';
 import { enqueueSnackbar } from 'notistack';
+import { useLocation } from 'react-router-dom';
+import { setCustomerInitialState } from '../redux/slices/customerSlice';
 
 const MenuPage = () => {
 
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  const { orderId, customerName, orderDate, bills, items, table } = location.state || {};
+
+  useEffect(() => {
+    if (location.state) {
+      dispatch(setCustomerInitialState({
+        orderId,
+        customerName,
+        tableNum: table
+      }));
+      dispatch(setCartInitialState(items));
+    }
+  }, [location.state, dispatch]);
+
   const customerData = useSelector(state => state.customer);
   const cartData = useSelector(state => state.cart);
-
-  const dispatch = useDispatch();
 
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);

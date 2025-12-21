@@ -5,8 +5,11 @@ import BackButton from '../components/shared/BackButton';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getAllOrders } from '../https';
 import { enqueueSnackbar } from 'notistack';
+import { useNavigate } from 'react-router-dom';
 
 const OrderPage = () => {
+
+  const navigate = useNavigate();
 
   const { data: resData, isError } = useQuery({
     queryKey: ['order'],
@@ -17,6 +20,12 @@ const OrderPage = () => {
   })
   if (isError) {
     enqueueSnackbar('Something went wrong!', { variant: 'error' });
+  }
+
+  const handleOrderCardClick = (order) => {
+    navigate('/menu', {
+      state: order
+    });
   }
 
   return (
@@ -36,10 +45,8 @@ const OrderPage = () => {
             resData?.data.data.map((order) => {
               return (
                 <OrderCard
-                  customerName={order.customerName}
-                  tableNum={order.tableNum}
-                  total={order.bills.total}
-                  itemsQty={order.items.length}
+                  handleOrderCardClick={handleOrderCardClick}
+                  order={order}
                 />
               )
             })

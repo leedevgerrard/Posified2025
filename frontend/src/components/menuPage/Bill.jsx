@@ -29,7 +29,8 @@ const Bill = ({isPaying, setIsPaying}) => {
         totalAfterTax: totalPriceWithTax
       },
       items: cartData,
-      table: customerData.tableId
+      table: customerData.tableId,
+      tableNum: customerData.tableNum
     }
 
     try {
