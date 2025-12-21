@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeItem } from '../../redux/slices/cartSlice';
+import { removeItem, updateQty } from '../../redux/slices/cartSlice';
 
 const MenuCartInfo = () => {
 
@@ -12,6 +12,20 @@ const MenuCartInfo = () => {
 
   const handleRemoveFromCart = (itemId) => {
     dispatch(removeItem(itemId));
+  }
+
+  const decrement = (itemId, name, qty) => {
+    const newQty = qty - 1;
+    if (newQty === 0) {
+      dispatch(removeItem(itemId));
+    } else {
+      dispatch(updateQty({ name, newQty }));
+    }
+  }
+
+  const increment = (name, qty) => {
+    const newQty = qty + 1;
+    dispatch(updateQty({ name, newQty }));
   }
 
   useEffect(() => {
@@ -41,9 +55,9 @@ const MenuCartInfo = () => {
                   {item.name}
                 </h1>
                 <div className='flex items-center justify-between bg-gray-100 px-2 py-1 w-[20%] rounded-lg'>
-                  <button className='text-green-500 text-lg'>&minus;</button>
-                  <span className=''>1</span>
-                  <button className='text-green-500 text-lg'>&#43;</button>
+                  <button onClick={() => decrement(item.id, item.name, item.qty)} className='text-green-500 text-lg'>&minus;</button>
+                  <span className=''>{item.qty}</span>
+                  <button onClick={() => increment(item.name, item.qty)} className='text-green-500 text-lg'>&#43;</button>
                 </div>
               </div>
               <div className='flex items-center justify-between mt-1'>

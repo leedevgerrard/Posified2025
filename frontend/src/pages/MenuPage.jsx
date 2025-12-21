@@ -9,7 +9,7 @@ import Modal from '../components/shared/Modal';
 import MenuCustomerInfo from '../components/menuPage/MenuCustomerInfo';
 import MenuCartInfo from '../components/menuPage/MenuCartInfo';
 import Bill from '../components/menuPage/Bill';
-import { addItems } from '../redux/slices/cartSlice';
+import { addItems, removeItem, updateQty } from '../redux/slices/cartSlice';
 import { keepPreviousData, useQuery, } from '@tanstack/react-query';
 import { getAllCategories, getProductByCategoryId } from '../https';
 import { enqueueSnackbar } from 'notistack';
@@ -17,6 +17,7 @@ import { enqueueSnackbar } from 'notistack';
 const MenuPage = () => {
 
   const customerData = useSelector(state => state.customer);
+  const cartData = useSelector(state => state.cart);
 
   const dispatch = useDispatch();
 
@@ -36,9 +37,21 @@ const MenuPage = () => {
 
   const handleAddToCart = (product) => {
     const { name, price } = product;
-    const newObj = {id: Date.now(), name, pricePerQty: price, qty: 1, price: price * 1};
+    let isItemSame = false
 
-    dispatch(addItems(newObj));
+    cartData.forEach((cartItem) => {
+      if (cartItem.name === name) {
+        const newQty = cartItem.qty + 1;
+        dispatch(updateQty({ name, newQty }));
+        isItemSame = true
+      }
+    });
+
+    if (!isItemSame) {
+      const newObj = {id: Date.now(), name, pricePerQty: price, qty: 1, price: price * 1};
+      dispatch(addItems(newObj));
+    }
+
     closeModal();
   }
 
