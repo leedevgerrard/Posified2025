@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { getTotalPrice } from '../../redux/slices/cartSlice';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateOrder } from '../../https';
@@ -71,9 +72,12 @@ const Bill = ({isPaying, setIsPaying}) => {
       {isPaying ? (
         <div>
           <div className='flex items-center gap-3 px-5 mt-4'>
-            <button className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold'>Cash</button>
-            <button className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold'>Transfer</button>
-            <button className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold'>QRIS</button>
+            <button onClick={() => setIsPaying(false)} className='border-green-500 border-2 px-4 py-4 w-full rounded-lg font-semibold flex-1'>
+              <IoMdArrowRoundBack color='red' />
+            </button>
+            <button className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold flex-2'>Cash</button>
+            <button className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold flex-2'>Transfer</button>
+            <button className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold flex-2'>QRIS</button>
           </div>
           <div className='flex items-center gap-3 px-5 mt-3'>
             <button className='bg-green-500 px-4 py-3 w-full rounded-lg font-semibold'>Print Receipt</button>

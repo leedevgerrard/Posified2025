@@ -15,6 +15,7 @@ import { getAllCategories, getProductByCategoryId } from '../https';
 import { enqueueSnackbar } from 'notistack';
 import { useLocation } from 'react-router-dom';
 import { setCustomerInitialState } from '../redux/slices/customerSlice';
+import Payment from '../components/menuPage/Payment';
 
 const MenuPage = () => {
 
@@ -164,11 +165,17 @@ const MenuPage = () => {
           {/* Customer info */}
           <MenuCustomerInfo />
           <hr className='border-t-2 mx-3' />
-          {/* Cart items */}
-          <MenuCartInfo />
-          <hr className='border-t-2 mx-3' />
-          {/* Bills */}
-          <Bill isPaying={isPaying} setIsPaying={setIsPaying} />
+          {isPaying ? (
+            <Payment />
+          ) : (
+            <div>
+              {/* Cart items */}
+              <MenuCartInfo />
+              <hr className='border-t-2 mx-3' />
+              {/* Bills */}
+              <Bill isPaying={isPaying} setIsPaying={setIsPaying} />
+            </div>
+          )}
         </div>
 
       </div>

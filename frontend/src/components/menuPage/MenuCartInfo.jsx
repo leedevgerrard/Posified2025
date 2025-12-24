@@ -43,7 +43,7 @@ const MenuCartInfo = () => {
         Order Details
       </h1>
 
-      <div className='mt-4 overflow-y-scroll scrollbar-hide h-[300px]' ref={scrollRef}>
+      <div className='mt-4 scrollbar-hide h-[300px] overflow-auto custom-scrollbar' ref={scrollRef}>
 
         {cartData?.length === 0 ? (
           <p className='opacity-50 text-sm flex justify-center items-center h-[300px]'>Your cart is empty</p>
