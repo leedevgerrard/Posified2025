@@ -9,9 +9,9 @@ import AddProductModal from '../components/adminDash/AddProductModal';
 const AdminDash = () => {
 
   const buttons = [
-    { label: 'Add Table', icon: <MdTableBar />, action: 'table'},
-    { label: 'Add Category', icon: <MdCategory />, action: 'category'},
-    { label: 'Add Product', icon: <BiSolidDish />, action: 'product'}
+    { label: 'Edit Table', icon: <MdTableBar />, action: 'table'},
+    { label: 'Edit Category', icon: <MdCategory />, action: 'category'},
+    { label: 'Edit Product', icon: <BiSolidDish />, action: 'product'}
   ]
 
   const [ isTableModalOpen, setIsTableModalOpen ] = useState(false);
@@ -26,8 +26,8 @@ const AdminDash = () => {
 
   return (
     <section className='h-[calc(100vh-4rem)]'>
-      <div className='container mx-auto flex items-center py-10 px-6 md:px-4'>
-        <div className='flex items-center gap-3'>
+      <div className='container flex flex-col items-start py-10 px-6 md:px-4'>
+        <div className='flex flex-col items-start gap-3 w-100'>
           {
             buttons.map(({ label, icon, action }) => {
               return (

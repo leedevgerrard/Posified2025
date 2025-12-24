@@ -10,7 +10,7 @@ const OrderCard = ({handleOrderCardClick, order}) => {
           <h1 className='text-lg font-semibold tracking-wide'>{order.customerName}</h1>
           <p className='text-[#8b8b8b] text-sm'>Table No: {order.tableNum}</p>
         </div>
-        <div className='flex flex-col items-start gap-2'>
+        <div className='flex flex-col items-end gap-2'>
           <p className='font-semibold'>
             Rp {order.bills.totalAfterTax}
           </p>
