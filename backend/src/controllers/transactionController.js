@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Transaction from '../models/Transaction';
+import Transaction from '../models/Transaction.js';
 import createHttpError from 'http-errors';
 
 export const addTransaction = async (req, res, next) => {

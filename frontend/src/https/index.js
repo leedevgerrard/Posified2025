@@ -32,3 +32,9 @@ export const getProductByCategoryId = (categoryId) => api.get(`/api/product/${ca
 export const getAllOrders = () => api.get('/api/order');
 export const addOrder = (data) => api.post('/api/order', data);
 export const updateOrder = (orderId, data) => api.put(`/api/order/${orderId}`, data);
+export const updateOrderStatus = (orderId, data) => api.patch(`/api/order/${orderId}`, data);
+
+// Transaction Endpoints
+export const getAllTransactions = () => api.get('/api/transaction');
+export const addTransaction = (data) => api.post('/api/transaction', data);
+export const getTransactionById = (transactionId) => api.get(`/api/transaction/${transactionId}`)

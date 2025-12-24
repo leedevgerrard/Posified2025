@@ -25,7 +25,9 @@ const customerSlice = createSlice({
     },
 
     removeCustomer: (state) => {
+      state.orderId = '',
       state.customerName = '',
+      state.tableId = '',
       state.tableNum = ''
     },
 

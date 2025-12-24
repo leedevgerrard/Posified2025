@@ -1,19 +1,28 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { formatDate, getAvatarName } from '../../utils/utils.js';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import { getTotalPrice } from '../../redux/slices/cartSlice.js';
 import { IoMdArrowRoundBack } from 'react-icons/io';
+import { useMutation } from '@tanstack/react-query';
+import { addTransaction, updateOrderStatus } from '../../https/index.js';
+import { enqueueSnackbar } from 'notistack';
+import { removeCustomer } from '../../redux/slices/customerSlice.js';
+import { useNavigate } from 'react-router-dom';
 
 const Payment = () => {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const customerData = useSelector(state => state.customer);
   const cartData = useSelector(state => state.cart);
   const scrollRef = useRef();
 
   const [date, setDate] = useState(new Date());
+  const [paymentMethod, setPaymentMethod] = useState('');
   const [paidAmount, setPaidAmount] = useState(0);
 
   const totalPrice = useSelector(getTotalPrice);
@@ -31,6 +40,47 @@ const Payment = () => {
         })
       }
     }, [cartData])
+
+  const handleFinishPayment = () => {
+    const transactionData = {
+      customerName: customerData.customerName,
+      items: cartData,
+      bills: {
+        total: totalPrice,
+        tax: tax,
+        totalAfterTax: totalPriceWithTax
+      },
+      payment: {
+        paymentMethod: paymentMethod,
+        paidAmount: paidAmount,
+        change: change
+      }
+    }
+
+    paymentMutation.mutate(transactionData);
+    updateOrderStatusMutation.mutate({ orderId: customerData.orderId, status: 'paid' });
+    dispatch(removeCustomer());
+    navigate('/');
+  }
+
+  const paymentMutation = useMutation({
+    mutationFn: (reqData) => addTransaction(reqData),
+    onSuccess: (res) => {
+      enqueueSnackbar('Payment successfull!', { variant: 'success' });
+    },
+    onError: (error) => {
+      const { response } = error;
+      enqueueSnackbar(response.data.message, { variant: 'error' });
+    }
+  })
+
+  const updateOrderStatusMutation = useMutation({
+    mutationFn: ({ orderId, status }) => updateOrderStatus(orderId, {status}),
+    onError: (error) => {
+      const { response } = error;
+      enqueueSnackbar(response.data.message, { variant: 'error' });
+    }
+  })
 
   return (
     <div className='px-4 py-2'>
@@ -57,9 +107,17 @@ const Payment = () => {
 
       <p className='py-2'>Payment Options</p>
       <div className='flex gap-2'>
-        <button className='border-green-500 border-2 px-4 py-1 w-full rounded-lg font-semibold flex-2'>Cash</button>
-        <button className='border-green-500 border-2 px-4 py-1 w-full rounded-lg font-semibold flex-2'>Transfer</button>
-        <button className='border-green-500 border-2 px-4 py-1 w-full rounded-lg font-semibold flex-2'>QRIS</button>
+        {['Cash', 'Transfer', 'QRIS'].map((method) => {
+          return (
+            <button
+              key={method}
+              onClick={() => setPaymentMethod(method)}
+              className={`border-green-500 border-2 px-4 py-1 w-full rounded-lg font-semibold flex-2 ${paymentMethod === method ? 'bg-green-500' : ''}`}
+            >
+              {method}
+            </button>
+          )
+        })}
       </div>
 
       <p className='py-2'>Paid Amount</p>
@@ -83,7 +141,7 @@ const Payment = () => {
       </div>
       <div className='flex items-center justify-between px-5 my-2'>
         <p className='text-xs font-medium mt-2'>Paid Amount</p>
-        <h1 className='text-md font-bold'>Rp {paidAmount}</h1>
+        <h1 className='text-md font-bold'>Rp {paidAmount ? paidAmount : '0'}</h1>
       </div>
       <div className='flex items-center justify-between px-5 my-2'>
         <p className='text-xs font-medium mt-2'>Change</p>
@@ -92,7 +150,7 @@ const Payment = () => {
 
       <div className='flex items-center gap-3 mt-3'>
         <button className='bg-green-500 py-3 w-full rounded-lg font-semibold'>Print Receipt</button>
-        <button className='bg-green-500 py-3 w-full rounded-lg font-semibold'>Finish</button>
+        <button onClick={handleFinishPayment} className='bg-green-500 py-3 w-full rounded-lg font-semibold'>Finish</button>
       </div>
 
     </div>

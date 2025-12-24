@@ -12,6 +12,7 @@ import orderRoute from './routes/orderRoute.js';
 import tableRoute from './routes/tableRoute.js';
 import productRoute from './routes/productRoute.js';
 import categoryRoute from './routes/categoryRoute.js';
+import transactionRoute from './routes/transactionRoute.js';
 
 const app = express();
 dotenv.config()
@@ -32,6 +33,7 @@ app.use('/api/order', orderRoute);
 app.use('/api/table', tableRoute);
 app.use('/api/product', productRoute);
 app.use('/api/category', categoryRoute);
+app.use('/api/transaction', transactionRoute);
 
 // Global Error Handler
 app.use(globalErrorHandler);
