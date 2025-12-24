@@ -19,8 +19,8 @@ const customerSlice = createSlice({
     },
 
     setCustomer: (state, action) => {
-      const { name } = action.payload;
-      state.orderId = `${Date.now()}`;
+      const { orderId, name } = action.payload;
+      state.orderId = orderId;
       state.customerName = name;
     },
 

@@ -53,3 +53,20 @@ export const getOrderById = async (req, res, next) => {
     next(error); 
   }
 }
+
+export const updateOrder = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const order = req.body;
+
+    const newOrder = await Order.findByIdAndUpdate(id, order, { new: true });
+
+    res.status(200).json({
+      success: true,
+      message: 'Order added!',
+      data: newOrder
+    })
+  } catch (error) {
+    next(error);
+  }
+}

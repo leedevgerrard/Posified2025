@@ -5,6 +5,9 @@ import Modal from './Modal';
 import { MdDashboardCustomize } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
 import { setCustomer } from '../../redux/slices/customerSlice';
+import { useMutation } from '@tanstack/react-query';
+import { addOrder } from '../../https';
+import { enqueueSnackbar } from 'notistack';
 
 const Header = () => {
 
@@ -33,10 +36,35 @@ const Header = () => {
   const isActivePage = path => location.pathname === path;
 
   const handleCreateOrder = () => {
-    dispatch(setCustomer({name}));
+    const orderData = {
+      status: 'ongoing',
+      customerName: name,
+      bills: {
+        total: 0,
+        tax: 0,
+        totalAfterTax: 0
+      },
+      items: [],
+      tableNum: 0
+    }
+    
+    newOrderMutation.mutate(orderData);
+    // dispatch(setCustomer({name}));
     navigate('/table');
     closeModal();
   }
+
+  const newOrderMutation = useMutation({
+    mutationFn: (reqData) => addOrder(reqData),
+    onSuccess: (res) => {
+      const orderId = res.data.data._id;
+      dispatch(setCustomer({ orderId, name }));
+    },
+    onError: (error) => {
+      const { response } = error;
+      enqueueSnackbar(response.data.message, { variant: 'error' });
+    }
+  })
   
   return (
     <header className='flex justify-between items-center py-3 px-8 bg-green-500'>

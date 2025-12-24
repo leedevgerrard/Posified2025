@@ -21,7 +21,7 @@ const MenuPage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const { orderId, customerName, orderDate, bills, items, table } = location.state || {};
+  const { _id: orderId, customerName, orderDate, bills, items, table } = location.state || {};
 
   useEffect(() => {
     if (location.state) {

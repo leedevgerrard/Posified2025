@@ -31,3 +31,4 @@ export const getProductByCategoryId = (categoryId) => api.get(`/api/product/${ca
 // Order Endpoints
 export const getAllOrders = () => api.get('/api/order');
 export const addOrder = (data) => api.post('/api/order', data);
+export const updateOrder = (orderId, data) => api.put(`/api/order/${orderId}`, data);

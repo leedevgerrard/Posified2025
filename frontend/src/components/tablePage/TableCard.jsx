@@ -2,6 +2,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { updateTable } from '../../redux/slices/customerSlice';
+import { useMutation } from '@tanstack/react-query';
+import { enqueueSnackbar } from 'notistack';
 
 const TableCard = ({ tableId, tableNum, status }) => {
 

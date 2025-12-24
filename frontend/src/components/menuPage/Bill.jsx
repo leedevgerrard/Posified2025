@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getTotalPrice } from '../../redux/slices/cartSlice';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { addOrder } from '../../https';
+import { updateOrder } from '../../https';
 import { enqueueSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 
@@ -34,7 +34,7 @@ const Bill = ({isPaying, setIsPaying}) => {
     }
 
     try {
-      await orderMutation.mutateAsync(orderData);
+      await orderMutation.mutateAsync({ orderId: customerData.orderId, orderData });
       await queryClient.invalidateQueries(['order']);
       navigate('/order');
     } catch (error) {
@@ -43,7 +43,7 @@ const Bill = ({isPaying, setIsPaying}) => {
   }
 
   const orderMutation = useMutation({
-    mutationFn: (reqData) => addOrder(reqData),
+    mutationFn: ({ orderId, orderData }) => updateOrder(orderId, orderData),
     onSuccess: (res) => {
       enqueueSnackbar('Order successfully added!', { variant: 'success' });
     },

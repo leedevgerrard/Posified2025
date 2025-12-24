@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
   {
-    orderId: {
-      type: String,
-      required: true
-    },
+    // orderId: {
+    //   type: String,
+    //   required: true
+    // },
     status: {
       type: String,
       default: 'ongoing'
