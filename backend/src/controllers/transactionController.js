@@ -23,7 +23,7 @@ export const getAllTransactions = async (req, res, next) => {
 
     res.status(200).json({
       status: 'success',
-      data: orders
+      data: transactions
     })
   } catch (error) {
     next(error);
@@ -47,6 +47,48 @@ export const getTransactionById = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: transaction
+    })
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const getTodaysTransactions = async (req, res, next) => {
+  try {
+    const now = new Date();
+
+    // WIB offset = +7 jam
+    const startOfDay = new Date(
+      Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate(),
+        -7, 0, 0, 0
+      )
+    )
+
+    const endOfDay = new Date(
+      Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate(),
+        16, 59, 59, 999
+      )
+    )
+
+    const orders = await Transaction.find({
+      createdAt: {
+        $gte: startOfDay,
+        $lte: endOfDay
+      }
+    })
+    if (!orders) {
+      orders = [];
+    }
+
+    res.status(200).json({
+      success: true,
+      data: orders
     })
   } catch (error) {
     next(error);

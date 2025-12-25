@@ -39,3 +39,4 @@ export const cancelOrder = (orderId, data) => api.patch(`/api/order/${orderId}/c
 export const getAllTransactions = () => api.get('/api/transaction');
 export const addTransaction = (data) => api.post('/api/transaction', data);
 export const getTransactionById = (transactionId) => api.get(`/api/transaction/${transactionId}`)
+export const getTodaysTransactions = () => api.get('/api/transaction/byDate');
