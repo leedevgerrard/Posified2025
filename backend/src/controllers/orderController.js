@@ -106,3 +106,29 @@ export const updateOrderStatus = async (req, res, next) => {
     next(error);
   }
 }
+
+export const cancelOrder = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      const error = createHttpError(404, 'Invalid ID!');
+      return next(error);
+    }
+
+    const cancelledOrder = await Order.findByIdAndUpdate(id,
+      { $set: { status: 'cancelled' } },
+      { new: true });
+    if (!cancelledOrder) {
+      const error = createHttpError(404, 'Order not found!');
+      return next(error);
+    }
+
+    res.status(200).json({
+      success: true,
+      data: cancelledOrder
+    })
+  } catch (error) {
+    next(error);
+  }
+}

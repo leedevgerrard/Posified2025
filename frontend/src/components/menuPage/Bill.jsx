@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { getTotalPrice } from '../../redux/slices/cartSlice';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateOrder } from '../../https';
+import { cancelOrder, updateOrder } from '../../https';
 import { enqueueSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
+import Modal from '../shared/Modal';
+import { removeCustomer } from '../../redux/slices/customerSlice';
 
 const Bill = ({isPaying, setIsPaying}) => {
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -19,6 +22,11 @@ const Bill = ({isPaying, setIsPaying}) => {
   const taxRate = 0.1;
   const tax = totalPrice * taxRate;
   const totalPriceWithTax = totalPrice + tax;
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pin, setPin] = useState('')
+
+  const closeModal = () => setIsModalOpen(false);
 
   const handleSaveOrder = async () => {
     const orderData = {
@@ -43,10 +51,27 @@ const Bill = ({isPaying, setIsPaying}) => {
     }
   }
 
+  const handleCancelOrder = async () => {
+    cancelOrderMutation.mutate({ orderId: customerData.orderId, pin });
+  }
+
   const orderMutation = useMutation({
     mutationFn: ({ orderId, orderData }) => updateOrder(orderId, orderData),
     onSuccess: (res) => {
       enqueueSnackbar('Order successfully added!', { variant: 'success' });
+    },
+    onError: (error) => {
+      const { response } = error;
+      enqueueSnackbar(response.data.message, { variant: 'error' });
+    }
+  })
+
+  const cancelOrderMutation = useMutation({
+    mutationFn: ({ orderId, pin }) => cancelOrder(orderId, { pin }),
+    onSuccess: (res) => {
+      enqueueSnackbar('Order successfully cancelled!', { variant: 'success' });
+      dispatch(removeCustomer());
+      navigate('/');
     },
     onError: (error) => {
       const { response } = error;
@@ -68,33 +93,30 @@ const Bill = ({isPaying, setIsPaying}) => {
         <p className='text-xs font-medium mt-2'>Total Price</p>
         <h1 className='text-md font-bold'>Rp {totalPriceWithTax}</h1>
       </div>
+      
+      <div>
+        <div className='flex items-center gap-3 px-5 mt-4'>
+          <button className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold'>Print Receipt</button>
+          <button onClick={cartData && handleSaveOrder} className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold'>Save Order</button>
+        </div>
+        <div className='flex items-center gap-3 px-5 mt-3'>
+          <button onClick={() => setIsModalOpen(true)} className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold flex-[1] hover:bg-red-500 hover:border-red-500'>Cancel</button>
+          <button onClick={() => setIsPaying(true)} className='bg-green-500 px-4 py-3 w-full rounded-lg font-semibold flex-[3]'>Payment</button>
+        </div>
+      </div>
 
-      {isPaying ? (
+      <Modal title='Cancel Order' isOpen={isModalOpen} onClose={closeModal} maxWidth='large'>
         <div>
-          <div className='flex items-center gap-3 px-5 mt-4'>
-            <button onClick={() => setIsPaying(false)} className='border-green-500 border-2 px-4 py-4 w-full rounded-lg font-semibold flex-1'>
-              <IoMdArrowRoundBack color='red' />
-            </button>
-            <button className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold flex-2'>Cash</button>
-            <button className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold flex-2'>Transfer</button>
-            <button className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold flex-2'>QRIS</button>
-          </div>
-          <div className='flex items-center gap-3 px-5 mt-3'>
-            <button className='bg-green-500 px-4 py-3 w-full rounded-lg font-semibold'>Print Receipt</button>
-            <button className='bg-green-500 px-4 py-3 w-full rounded-lg font-semibold'>Finish</button>
+          <label className='block mb-2 text-sm font-medium'>Enter Manager PIN</label>
+          <div className='flex items-center rounded-lg p-3 px-4 bg-gray-100'>
+            <input value={pin} onChange={(e) => setPin(e.target.value)} type="password" name='' placeholder='Enter manager PIN' id='' className='bg-transparent flex-1 focus:outline-none' />
           </div>
         </div>
-      ) : (
-        <div>
-          <div className='flex items-center gap-3 px-5 mt-4'>
-            <button className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold'>Print Receipt</button>
-            <button onClick={cartData && handleSaveOrder} className='border-green-500 border-2 px-4 py-3 w-full rounded-lg font-semibold'>Save Order</button>
-          </div>
-          <div className='flex items-center px-5 mt-3'>
-            <button onClick={() => setIsPaying(true)} className='bg-green-500 px-4 py-3 w-full rounded-lg font-semibold'>Payment</button>
-          </div>
-        </div>
-      )}
+        <button onClick={handleCancelOrder} className='w-full bg-green-500 text-white rounded-lg py-3 mt-5 hover:bg-green-700'>
+          Cancel Order
+        </button>
+      </Modal>
+
     </div>
   )
 }

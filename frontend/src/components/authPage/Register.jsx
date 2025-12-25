@@ -11,7 +11,8 @@ const Register = ({setIsRegister}) => {
     phone: '',
     password: '',
     confirmPassword: '',
-    role: ''
+    role: '',
+    managerPin: null
   })
 
   const handleChange = (e) => {
@@ -38,7 +39,8 @@ const Register = ({setIsRegister}) => {
         phone: '',
         password: '',
         confirmPassword: '',
-        role: ''
+        role: '',
+        managerPin: null
       });
 
       setTimeout(() => {
@@ -153,6 +155,23 @@ const Register = ({setIsRegister}) => {
             })}
           </div>
         </div>
+        { formData.role === 'Admin' &&
+          <div>
+            <label className='block my-2 text-sm font-medium'>
+              Manager PIN
+            </label>
+            <div className='flex items-center rounded-lg p-3 px-4 bg-gray-100'>
+              <input
+                type="password"
+                name='managerPin'
+                value={formData.managerPin}
+                onChange={handleChange}
+                placeholder='Enter manager PIN'
+                className='bg-transparent flex-1 focus:outline-none'
+              />
+            </div>
+          </div>
+        }
 
         <button type='submit' className='w-full mt-6 py-3 rounded-lg text-lg bg-green-500 text-white font-bold'>
           Sign Up

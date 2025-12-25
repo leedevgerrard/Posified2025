@@ -33,6 +33,7 @@ export const getAllOrders = () => api.get('/api/order');
 export const addOrder = (data) => api.post('/api/order', data);
 export const updateOrder = (orderId, data) => api.put(`/api/order/${orderId}`, data);
 export const updateOrderStatus = (orderId, data) => api.patch(`/api/order/${orderId}`, data);
+export const cancelOrder = (orderId, data) => api.patch(`/api/order/${orderId}/cancel`, data);
 
 // Transaction Endpoints
 export const getAllTransactions = () => api.get('/api/transaction');

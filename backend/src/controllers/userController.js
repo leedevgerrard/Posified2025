@@ -7,7 +7,7 @@ import { config } from "../config/config.js";
 
 export const register = async (req, res, next) => {
   try {
-    const { name, email, phone, password, confirmPassword, role } = req.body;
+    const { name, email, phone, password, confirmPassword, role, managerPin } = req.body;
 
     if (!name || !email || !phone || !password || !confirmPassword || !role) {
       const error = createHttpError(400, 'All fields are required!');
@@ -25,7 +25,7 @@ export const register = async (req, res, next) => {
       return next(error);
     }
 
-    const newUser = User({name, email, phone, password, role});
+    const newUser = User({name, email, phone, password, role, managerPin});
     await newUser.save();
 
     res.status(201).json({

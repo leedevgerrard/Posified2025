@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
+import createHttpError from "http-errors";
 
 const userSchema = new mongoose.Schema(
   {
@@ -32,17 +33,35 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       required: true
+    },
+
+    managerPin: {
+      type: String,
+      default: null
     }
   },
   {timestamps: true}
 )
 
 userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) {
-    next();
+  if (this.isModified('password')) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
   }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+
+  if (this.role === 'Admin' && !this.managerPin) {
+    const error = createHttpError(401, 'Manager PIN is required!');
+    return next(error);
+  }
+
+  if (this.role === 'Admin' && this.managerPin) {
+    const salt = await bcrypt.genSalt(10);
+    this.managerPin = await bcrypt.hash(this.managerPin, salt);
+  } else if (this.role === 'Waiter' || this.role === 'Cashier') {
+    this.managerPin = null;
+  }
+
+  next();
 })
 
 const User = mongoose.model('User', userSchema);
