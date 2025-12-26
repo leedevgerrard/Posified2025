@@ -4,12 +4,12 @@ import { IoMdClose } from 'react-icons/io';
 import { addCategory } from '../../https';
 import { enqueueSnackbar } from 'notistack';
 
-const AddCategoryModal = ({setIsCategoryModalOpen}) => {
+const AddCategoryModal = ({setIsAddCategoryModalOpen}) => {
 
   const [ categoryName, setCategoryName ] = useState('');
 
   const handleCloseModal = () => {
-    setIsCategoryModalOpen(false);
+    setIsAddCategoryModalOpen(false);
   }
 
   const handleChange = (e) => {
@@ -27,7 +27,7 @@ const AddCategoryModal = ({setIsCategoryModalOpen}) => {
   const categoryMutation = useMutation({
     mutationFn: (reqData) => addCategory(reqData),
     onSuccess: (res) => {
-      setIsCategoryModalOpen(false);
+      setIsAddCategoryModalOpen(false);
       enqueueSnackbar(res.data.message, { variant: 'success' });
     },
     onError: (error) => {

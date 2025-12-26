@@ -69,3 +69,27 @@ export const updateTable = async (req, res, next) => {
     next(error);
   }
 }
+
+export const deleteTable = async (req, res, next) => {
+  try {
+    const { tableNum } = req.params;
+    if (!tableNum) {
+      const error = createHttpError(400, 'Please provide table number!');
+      return next(error);
+    }
+
+    const deletedTable = await Table.findOneAndDelete({ tableNum });
+    if (!deletedTable) {
+      const error = createHttpError(404, "Table doesn't exist!");
+      return next(error);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Table successfully removed!',
+      data: deletedTable
+    })
+  } catch (error) {
+    next(error);
+  }
+}

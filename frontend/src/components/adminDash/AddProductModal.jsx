@@ -4,7 +4,7 @@ import { IoMdClose } from 'react-icons/io';
 import { addProduct, getAllCategories } from '../../https';
 import { enqueueSnackbar } from 'notistack';
 
-const AddProductModal = ({setIsProductModalOpen}) => {
+const AddProductModal = ({setIsAddProductModalOpen}) => {
 
   // Fetching categories
   const { data: resData, isError } = useQuery({
@@ -25,7 +25,7 @@ const AddProductModal = ({setIsProductModalOpen}) => {
   })
 
   const handleCloseModal = () => {
-    setIsProductModalOpen(false);
+    setIsAddProductModalOpen(false);
   }
 
   const handleChange = (e) => {
@@ -40,7 +40,7 @@ const AddProductModal = ({setIsProductModalOpen}) => {
   const productMutation = useMutation({
     mutationFn: (reqData) => addProduct(reqData),
     onSuccess: (res) => {
-      setIsProductModalOpen(false);
+      setIsAddProductModalOpen(false);
       enqueueSnackbar(res.data.message, { variant: 'success' });
     },
     onError: (error) => {

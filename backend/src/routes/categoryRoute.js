@@ -5,6 +5,6 @@ import { addCategory, deleteCategory, getAllCategories } from '../controllers/ca
 const router = express.Router();
 
 router.route('/').get(isVerfiedUser, getAllCategories).post(isVerfiedUser, isAdmin, addCategory);
-router.route('/:id').delete(isVerfiedUser, isAdmin, deleteCategory);
+router.route('/:categorySlug/delete').delete(isVerfiedUser, isAdmin, deleteCategory);
 
 export default router;

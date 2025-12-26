@@ -1,10 +1,11 @@
+import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
-import { addTable } from '../../https';
+import { deleteTable } from '../../https';
 import { enqueueSnackbar } from 'notistack';
-import { useMutation } from '@tanstack/react-query';
 
-const AddTableModal = ({setIsAddTableModalOpen}) => {
+const RemoveTableModal = ({setIsRemoveTableModalOpen}) => {
+
   const [ tableData, setTableData ] = useState({
     tableNum: ''
   })
@@ -15,18 +16,18 @@ const AddTableModal = ({setIsAddTableModalOpen}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    tableMutation.mutate(tableData);
+    removeTableMutation.mutate(tableData.tableNum);
   }
 
   const handleCloseModal = () => {
-    setIsAddTableModalOpen(false);
+    setIsRemoveTableModalOpen(false);
   }
 
-  const tableMutation = useMutation({
-    mutationFn: (reqData) => addTable(reqData),
+  const removeTableMutation = useMutation({
+    mutationFn: (reqData) => deleteTable(reqData),
     onSuccess: (res) => {
-      setIsAddTableModalOpen(false);
-      enqueueSnackbar(res.data.message, { variant: 'success' });
+      setIsRemoveTableModalOpen(false);
+      enqueueSnackbar('Table successfully removed!', { variant: 'success' });
     },
     onError: (error) => {
       const { response } = error;
@@ -41,7 +42,7 @@ const AddTableModal = ({setIsAddTableModalOpen}) => {
         {/* Modal header */}
         <div className='flex justify-between items-center mb-4'>
           <h2 className='text-xl font-semibold'>
-            Add Table
+            Remove Table
           </h2>
           <button onClick={handleCloseModal} className='hover:text-red-500'>
             <IoMdClose size={24} />
@@ -68,7 +69,7 @@ const AddTableModal = ({setIsAddTableModalOpen}) => {
           </div>
 
           <button type='submit' className='w-full mt-6 py-3 rounded-lg text-lg bg-green-500 text-white font-bold'>
-            Add Table
+            Remove Table
           </button>
 
         </form>
@@ -78,4 +79,4 @@ const AddTableModal = ({setIsAddTableModalOpen}) => {
   )
 }
 
-export default AddTableModal;
+export default RemoveTableModal;

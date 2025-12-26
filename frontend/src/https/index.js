@@ -18,15 +18,18 @@ export const getUser = () => api.get('/api/user');
 // Table Endpoints
 export const getAllTables = () => api.get('/api/table');
 export const addTable = (data) => api.post('/api/table', data);
+export const deleteTable = (tableNum) => api.delete(`/api/table/${tableNum}/delete`);
 
 // Category Endpoints
 export const getAllCategories = () => api.get('/api/category');
 export const addCategory = (data) => api.post('/api/category', data);
+export const deleteCategory = (categorySlug) => api.delete(`/api/category/${categorySlug}/delete`);
 
 // Product Endpoints
 export const getAllProducts = () => api.get('/api/product');
 export const addProduct = (data) => api.post('/api/product', data);
 export const getProductByCategoryId = (categoryId) => api.get(`/api/product/${categoryId}`);
+export const deleteProduct = (productName) => api.delete(`/api/product/${productName}/delete`);
 
 // Order Endpoints
 export const getAllOrders = () => api.get('/api/order');

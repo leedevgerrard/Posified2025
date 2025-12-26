@@ -1,31 +1,30 @@
+import { useMutation } from '@tanstack/react-query';
+import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
-import { addTable } from '../../https';
-import { enqueueSnackbar } from 'notistack';
-import { useMutation } from '@tanstack/react-query';
+import { deleteCategory } from '../../https';
 
-const AddTableModal = ({setIsAddTableModalOpen}) => {
-  const [ tableData, setTableData ] = useState({
-    tableNum: ''
-  })
+const RemoveCategoryModal = ({setIsRemoveCategoryModalOpen}) => {
+
+  const [ categoryName, setCategoryName ] = useState('');
+
+  const handleCloseModal = () => {
+    setIsRemoveCategoryModalOpen(false);
+  }
 
   const handleChange = (e) => {
-    setTableData({...tableData, [e.target.name]: e.target.value});
+    setCategoryName(e.target.value);
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    tableMutation.mutate(tableData);
+    removeCategoryMutation.mutate(categoryName.toLowerCase());
   }
 
-  const handleCloseModal = () => {
-    setIsAddTableModalOpen(false);
-  }
-
-  const tableMutation = useMutation({
-    mutationFn: (reqData) => addTable(reqData),
+  const removeCategoryMutation = useMutation({
+    mutationFn: (reqData) => deleteCategory(reqData),
     onSuccess: (res) => {
-      setIsAddTableModalOpen(false);
+      setIsRemoveCategoryModalOpen(false);
       enqueueSnackbar(res.data.message, { variant: 'success' });
     },
     onError: (error) => {
@@ -41,7 +40,7 @@ const AddTableModal = ({setIsAddTableModalOpen}) => {
         {/* Modal header */}
         <div className='flex justify-between items-center mb-4'>
           <h2 className='text-xl font-semibold'>
-            Add Table
+            Remove Category
           </h2>
           <button onClick={handleCloseModal} className='hover:text-red-500'>
             <IoMdClose size={24} />
@@ -53,13 +52,13 @@ const AddTableModal = ({setIsAddTableModalOpen}) => {
 
           <div>
             <label className='block mb-2 mt-3 text-sm font-medium'>
-              Table Number
+              Category Name
             </label>
             <div className='flex items-center rounded-lg p-3 px-4 bg-gray-100'>
               <input
-                type="number"
-                name='tableNum'
-                value={tableData.tableNum}
+                type="text"
+                name='name'
+                value={categoryName}
                 onChange={handleChange}
                 className='bg-transparent flex-1 focus:outline-none'
                 required
@@ -68,7 +67,7 @@ const AddTableModal = ({setIsAddTableModalOpen}) => {
           </div>
 
           <button type='submit' className='w-full mt-6 py-3 rounded-lg text-lg bg-green-500 text-white font-bold'>
-            Add Table
+            Remove Category
           </button>
 
         </form>
@@ -78,4 +77,4 @@ const AddTableModal = ({setIsAddTableModalOpen}) => {
   )
 }
 
-export default AddTableModal;
+export default RemoveCategoryModal;
