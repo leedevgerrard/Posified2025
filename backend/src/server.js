@@ -22,7 +22,10 @@ const PORT = config.port;
 // Middleware
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:5173']
+  origin: [
+    'http://localhost:5173',
+    'https://posified2025.vercel.app'
+  ]
 }))
 app.use(express.json());
 app.use(cookieParser())
