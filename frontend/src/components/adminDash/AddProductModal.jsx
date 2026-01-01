@@ -112,7 +112,7 @@ const AddProductModal = ({setIsAddProductModalOpen}) => {
           </div>
 
           <button type='submit' className='w-full mt-6 py-3 rounded-lg text-lg bg-green-500 text-white font-bold'>
-            Add Table
+            Add Product
           </button>
 
         </form>

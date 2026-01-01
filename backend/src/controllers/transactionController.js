@@ -5,6 +5,23 @@ import createHttpError from 'http-errors';
 export const addTransaction = async (req, res, next) => {
   try {
     const transaction = Transaction(req.body);
+
+    const { customerName, items, bills, payment } = transaction;
+    if (!customerName || !items || !bills || !payment) {
+      const error = createHttpError(400, 'Incomplete data!');
+      return next(error);
+    }
+
+    if (payment.paymentMethod != 'Cash' && payment.paymentMethod != 'Transfer' && payment.paymentMethod != 'QRIS') {
+      const error = createHttpError(400, 'Invalid payment method!');
+      return next(error);
+    }
+
+    if (payment.paidAmount < bills.totalAfterTax) {
+      const error = createHttpError(400, 'Invalid payment amount!');
+      return next(error);
+    }
+
     await transaction.save();
 
     res.status(201).json({

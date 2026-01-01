@@ -59,14 +59,14 @@ const Payment = () => {
 
     paymentMutation.mutate(transactionData);
     updateOrderStatusMutation.mutate({ orderId: customerData.orderId, status: 'paid' });
-    dispatch(removeCustomer());
-    navigate('/');
   }
 
   const paymentMutation = useMutation({
     mutationFn: (reqData) => addTransaction(reqData),
     onSuccess: (res) => {
       enqueueSnackbar('Payment successfull!', { variant: 'success' });
+      dispatch(removeCustomer());
+      navigate('/');
     },
     onError: (error) => {
       const { response } = error;
